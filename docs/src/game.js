@@ -4,11 +4,13 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// ------------------- Background -------------------
-const bgImage = new Image();
-bgImage.src = "assets/layer1.png"; // ضع الصورة في مجلد assets
-let bgX = 0;
-const bgSpeed = 2; // سرعة تحرك الخلفية
+// ------------------- Parallax Background -------------------
+const bgLayers = [
+    {x:0, y:0, speed:0.2, color:"#cceeff"},
+    {x:0, y:0, speed:0.4, color:"#aaddff"},
+    {x:0, y:0, speed:0.6, color:"#88ccff"},
+    {x:0, y:0, speed:1.0, color:"#3399ff"}
+];
 
 // ------------------- Characters -------------------
 const characters = {
@@ -16,6 +18,7 @@ const characters = {
     ninja: {color:"black"},
     robot: {color:"silver"}
 };
+
 let currentCharacter = characters.runner;
 
 // Player
@@ -51,7 +54,7 @@ function createObstacle() {
     });
 }
 
-// Boss
+// ------------------- Boss -------------------
 const boss = {
     x: canvas.width,
     y: canvas.height - 200,
@@ -63,10 +66,10 @@ const boss = {
     active: false
 };
 
-// Score
+// ------------------- Score -------------------
 let score = 0;
 
-// Controls
+// ------------------- Controls -------------------
 function jump() {
     if(player.grounded){
         player.dy = player.jumpPower;
@@ -84,11 +87,14 @@ document.getElementById("jumpBtn").addEventListener("click", jump);
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // Draw background (moving)
-    bgX -= bgSpeed;
-    if(bgX <= -canvas.width) bgX = 0;
-    ctx.drawImage(bgImage, bgX, 0, canvas.width, canvas.height);
-    ctx.drawImage(bgImage, bgX + canvas.width, 0, canvas.width, canvas.height);
+    // Draw Background
+    bgLayers.forEach(layer=>{
+        layer.x -= layer.speed;
+        if(layer.x<=-canvas.width) layer.x=0;
+        ctx.fillStyle = layer.color;
+        ctx.fillRect(layer.x,0,canvas.width,canvas.height);
+        ctx.fillRect(layer.x+canvas.width,0,canvas.width,canvas.height);
+    });
 
     // Player movement
     player.dy += player.gravity;
@@ -109,6 +115,7 @@ function update(){
         ctx.fillStyle = obs.color;
         ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
 
+        // Collision
         if(player.x < obs.x + obs.width &&
            player.x + player.width > obs.x &&
            player.y < obs.y + obs.height &&
@@ -136,6 +143,7 @@ function update(){
         ctx.fillStyle = boss.color;
         ctx.fillRect(boss.x,boss.y,boss.width,boss.height);
 
+        // Collision with player
         if(player.x < boss.x + boss.width &&
            player.x + player.width > boss.x &&
            player.y < boss.y + boss.height &&
@@ -146,6 +154,7 @@ function update(){
             window.location.reload();
         }
 
+        // Reset Boss
         if(boss.x + boss.width < 0){
             boss.x = canvas.width;
             boss.health--;
