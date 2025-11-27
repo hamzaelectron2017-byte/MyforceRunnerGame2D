@@ -2,25 +2,15 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>لعبة الجري 2D</title>
-
-<style>
-  body { margin: 0; overflow: hidden; }
-  canvas { display: block; background: #87CEEB; }
-  #score { position: absolute; top: 10px; left: 10px; font-size: 20px; color: #fff; }
-</style>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>runner game 2D</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div id="score">النقاط: 0</div>
-
-<canvas id="gameCanvas" width="900" height="500"></canvas>
-
-<!-- ملفات اللعبة داخل src -->
-<script src="src/player.js"></script>
+<canvas id="gameCanvas"></canvas>
+<div id="score">Score: 0</div>
 <script src="src/game.js"></script>
 <script src="src/main.js"></script>
-
 </body>
 </html>
+
