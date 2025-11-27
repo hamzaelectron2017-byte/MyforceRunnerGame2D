@@ -1,13 +1,40 @@
-console.log("Advanced 2D Runner Game Ready!");
+// ------------------- Canvas -------------------
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-// Change Character Function
-function changeCharacter(char){
-    if(char==="runner") currentCharacter=characters.runner;
-    if(char==="ninja") currentCharacter=characters.ninja;
-    if(char==="robot") currentCharacter=characters.robot;
+// Initialize player
+resetPlayer(canvas.height);
+
+// ------------------- Controls -------------------
+window.addEventListener("keydown", e => { 
+    if(e.code==="Space") jump(); 
+});
+document.getElementById("jumpBtn").addEventListener("click", jump);
+
+// ------------------- Score -------------------
+let score = 0;
+
+// ------------------- Game Loop -------------------
+function update(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Draw Background
+    drawBackground(ctx, canvas.width, canvas.height);
+
+    // Update & Draw Player
+    updatePlayer(canvas.height);
+    drawPlayer(ctx);
+
+    // Draw Obstacles
+    drawObstacles(ctx, canvas.width, canvas.height);
+
+    // Draw Boss
+    drawBoss(ctx, canvas.width, canvas.height);
+
+    requestAnimationFrame(update);
 }
 
-// Example: switch to Ninja after 10 points
-setInterval(()=>{
-    if(score>=10) changeCharacter("ninja");
-},1000);
+// Start Game Loop
+update();
