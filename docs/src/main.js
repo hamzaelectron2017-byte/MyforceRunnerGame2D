@@ -40,4 +40,14 @@ function update(){
     requestAnimationFrame(update);
 }
 
-update();
+// تأكد من تحميل كل الصور قبل بدء اللعبة
+let imagesLoaded = 0;
+bgImages.forEach(img => {
+    img.onload = () => {
+        imagesLoaded++;
+        if(imagesLoaded === bgImages.length){
+            console.log("All background images loaded!");
+            update(); // تبدأ اللعبة فقط بعد تحميل كل الخلفيات
+        }
+    };
+});

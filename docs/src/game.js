@@ -20,18 +20,22 @@ const bgLayer = {
 // Draw background function
 function drawBackground(ctx, canvasWidth, canvasHeight){
     const img = bgImages[currentLevel - 1]; // الصورة الحالية
+
+    if(!img.complete || img.naturalWidth === 0){
+        // الصورة لم تُحمّل بعد
+        ctx.fillStyle = "#87CEEB";
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        return;
+    }
+
+    // تحريك الخلفية
     bgLayer.x -= bgLayer.speed;
     if(bgLayer.x <= -canvasWidth) bgLayer.x = 0;
 
-    if(img.complete){
-        ctx.drawImage(img, bgLayer.x, 0, canvasWidth, canvasHeight);
-        ctx.drawImage(img, bgLayer.x + canvasWidth, 0, canvasWidth, canvasHeight);
-    } else {
-        // إذا الصورة لم تُحمّل بعد، ارسم خلفية بلون
-        ctx.fillStyle = "#87CEEB";
-        ctx.fillRect(0,0,canvasWidth,canvasHeight);
-    }
+    ctx.drawImage(img, bgLayer.x, 0, canvasWidth, canvasHeight);
+    ctx.drawImage(img, bgLayer.x + canvasWidth, 0, canvasWidth, canvasHeight);
 }
+
 
 // تغيير المستوى
 function nextLevel(){
