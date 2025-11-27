@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>لعبة الجري 2D</title>
+
+<style>
+  body { margin: 0; overflow: hidden; }
+  canvas { display: block; background: #87CEEB; }
+  #score { position: absolute; top: 10px; left: 10px; font-size: 20px; color: #fff; }
+</style>
+
+</head>
+<body>
+
+<div id="score">النقاط: 0</div>
+
+<canvas id="gameCanvas" width="900" height="500"></canvas>
+
+<!-- ملفات اللعبة داخل src -->
+<script src="src/player.js"></script>
+<script src="src/game.js"></script>
+<script src="src/main.js"></script>
+
+</body>
+</html>
